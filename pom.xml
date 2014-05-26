@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.technbolts</groupId>
-    <artifactId>robothack</artifactId>
+    <artifactId>nethack</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
