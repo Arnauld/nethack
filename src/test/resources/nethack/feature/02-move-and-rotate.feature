@@ -17,7 +17,7 @@ Feature: RobotHack movement
 
   Scenario: Move forward in the looking direction
 
-    Given a simple 4x4 grid
+    Given a simple 4x4 sector
     And my program is located on cell (1,1) looking in east direction
     When the next instruction executed is MOV
     Then my program should be located on cell (2, 1)

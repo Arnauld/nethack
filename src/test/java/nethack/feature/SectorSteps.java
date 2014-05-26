@@ -14,16 +14,25 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class SectorSteps {
 
-    private Sector sector;
+    private final Context context;
+
+    public SectorSteps(Context context) {
+        this.context = context;
+    }
+
+    private Sector currentSector() {
+        return context.getSector();
+    }
 
     @Given("^a simple (\\d+)x(\\d+) sector$")
     public void createRectangularSector(int width, int height) throws Throwable {
-        sector = new RectangularSector(width, height);
+        Sector sector = new RectangularSector(width, height);
+        context.setSector(sector);
     }
 
     @Then("^the block at \\((\\d+),(\\d+)\\) is grey and empty$")
     public void assertBlockIsGreyAndEmpty(int x, int y) throws Throwable {
-        Block block = sector.blockAt(x, y);
+        Block block = currentSector().blockAt(x, y);
         assertThat(block.isEmpty()).isTrue();
         assertThat(block.color()).isEqualTo(Color.Grey);
     }
