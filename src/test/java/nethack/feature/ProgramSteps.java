@@ -45,7 +45,7 @@ public class ProgramSteps {
         assertThat(execEnv.getDirection()).isEqualTo(expectedDir);
     }
 
-    @Then("^my program should be located on cell \\((\\d+), (\\d+)\\)$")
+    @Then("^my program should be located on cell \\((\\d+),\\s*(\\d+)\\)$")
     public void assertProgramIsLocatedAt(int x, int y) throws Throwable {
         ExecutionEnvironment execEnv = context.getExecutionEnvironment();
         assertThat(execEnv.getLocation()).isEqualTo(new Location(x, y));

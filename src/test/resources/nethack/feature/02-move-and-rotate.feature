@@ -55,13 +55,13 @@ Feature: RobotHack movement
   @acceptance
   Scenario Outline: Move forward in the looking direction
 
-    Given a simple 3x3 grid
+    Given a simple 3x3 sector
     And my program is located on cell (2,2) looking in <direction> direction
     When the next instruction executed is MOV
-    Then my program should be located on cell <new-position>
+    Then my program should be located on cell <new_position>
 
   Examples:
-    | direction | new-position |
+    | direction | new_position |
     | east      | (3,2)        |
     | west      | (1,2)        |
     | north     | (2,1)        |
