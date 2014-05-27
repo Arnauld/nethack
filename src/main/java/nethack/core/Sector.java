@@ -1,10 +1,15 @@
 package nethack.core;
 
+import java.util.stream.Stream;
+
 /**
  * @author <a href="http://twitter.com/aloyer">@aloyer</a>
  */
 public interface Sector {
+
     Block blockAt(int x, int y);
 
     boolean isInside(Location location);
+
+    Stream<Block> blocks();
 }

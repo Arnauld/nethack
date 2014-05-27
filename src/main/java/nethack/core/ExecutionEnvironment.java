@@ -8,6 +8,7 @@ public class ExecutionEnvironment {
     private Location location;
     private Direction direction;
     private Sector sector;
+    //
     private ProgramExecutionException lastProgramExecutionException;
 
     public ExecutionEnvironment() {
@@ -23,9 +24,14 @@ public class ExecutionEnvironment {
     }
 
     public void lookAt(Direction direction) {
-        if (direction == null)
-            crash(ErrorCode.UndefinedDirection);
-        this.direction = direction;
+        try {
+            if (direction == null)
+                crash(ErrorCode.UndefinedDirection);
+            this.direction = direction;
+        } catch (ProgramExecutionException pe) {
+            lastProgramExecutionException = pe;
+            throw pe;
+        }
     }
 
     public Direction getDirection() {
@@ -45,7 +51,7 @@ public class ExecutionEnvironment {
         try {
             checkLocation(newLocation);
             checkSectorRange(newLocation);
-            checkBlock(newLocation);
+            checkAllowedBlock(newLocation);
 
             freeLocation(location);
             markOccupied(newLocation);
@@ -68,7 +74,7 @@ public class ExecutionEnvironment {
         Block block = sector.blockAt(location.x(), location.y());
         Object occupiedBy = block.occupiedBy();
         if (occupiedBy == null || !this.equals(occupiedBy)) {
-            throw new ProgramExecutionException(ErrorCode.CannotLeaveNonOccupiedBlock, occupiedBy);
+            throw new ProgramExecutionException(ErrorCode.BlockNonOccupied, occupiedBy);
         }
         block.free();
     }
@@ -79,7 +85,7 @@ public class ExecutionEnvironment {
         }
     }
 
-    private void checkBlock(Location newLocation) {
+    private void checkAllowedBlock(Location newLocation) {
         Block block = sector.blockAt(newLocation.x(), newLocation.y());
         if (block.isCorrupted()) {
             crash(ErrorCode.SectorCorrupted, newLocation);
@@ -91,7 +97,7 @@ public class ExecutionEnvironment {
 
     private void checkSectorRange(Location newLocation) {
         if (!sector.isInside(newLocation)) {
-            crash(ErrorCode.LocationOutsideSector, newLocation);
+            crash(ErrorCode.SectorOutOfRange, newLocation);
         }
     }
 

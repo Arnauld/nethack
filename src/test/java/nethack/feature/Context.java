@@ -2,9 +2,10 @@ package nethack.feature;
 
 import nethack.core.Document;
 import nethack.core.ExecutionEnvironment;
-import nethack.core.Level;
+import nethack.core.RectangularSector;
 import nethack.core.Sector;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,7 +14,6 @@ import java.util.List;
 public class Context {
     private Sector sector;
     private ExecutionEnvironment executionEnvironment;
-    private Level level;
 
     public Sector getSector() {
         return sector;
@@ -45,15 +45,11 @@ public class Context {
         return new Document();
     }
 
-    public Level newLevel(List<Document> documents) {
-        return new Level(documents);
-    }
+    public Sector newSector(List<Document> documents) {
+        Iterator<Document> it = documents.iterator();
 
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
-    public Level getLevel() {
-        return level;
+        RectangularSector sector = new RectangularSector(documents.size(), 1);
+        sector.blocks().forEach((block) -> block.placeDocument(it.next()));
+        return sector;
     }
 }

@@ -1,5 +1,7 @@
 package nethack.core;
 
+import java.util.stream.Stream;
+
 /**
  * @author <a href="http://twitter.com/aloyer">@aloyer</a>
  */
@@ -27,8 +29,19 @@ public class RectangularSector implements Sector {
     }
 
     @Override
+    public Stream<Block> blocks() {
+        Stream.Builder<Block> builder =  Stream.builder();
+        for (int y = 1; y <= height; y++) {
+            for (int x = 1; x <= width; x++) {
+                builder.add(blockAt(x,y));
+            }
+        }
+        return builder.build();
+    }
+
+    @Override
     public boolean isInside(Location location) {
-        if(location == null)
+        if (location == null)
             throw new IllegalArgumentException();
 
         return location.x() > 0

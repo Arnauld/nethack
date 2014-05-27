@@ -4,8 +4,17 @@ package nethack.core;
  * @author <a href="http://twitter.com/aloyer">@aloyer</a>
  */
 public class Block {
+    private Document document;
     private Object occupiedBy = null;
     private boolean corrupted;
+
+    public void placeDocument(Document document) {
+        this.document = document;
+    }
+
+    public Document document() {
+        return document;
+    }
 
     public Color color() {
         return Color.Grey;
@@ -38,4 +47,5 @@ public class Block {
     public Object occupiedBy() {
         return occupiedBy;
     }
+
 }
