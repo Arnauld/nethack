@@ -21,20 +21,24 @@ public class Context {
 
     public void setSector(Sector sector) {
         this.sector = sector;
+        syncSector();
     }
 
     public ExecutionEnvironment getExecutionEnvironment() {
         return executionEnvironment;
     }
 
-    public void setExecutionEnvironment(ExecutionEnvironment executionEnvironment) {
-        this.executionEnvironment = executionEnvironment;
+    public ExecutionEnvironment getOrInitExecutionEnvironment() {
+        if (executionEnvironment == null) {
+            executionEnvironment = new ExecutionEnvironment();
+            syncSector();
+        }
+        return executionEnvironment;
     }
 
-    public ExecutionEnvironment getOrInitExecutionEnvironment() {
-        if (executionEnvironment == null)
-            executionEnvironment = new ExecutionEnvironment();
-        return executionEnvironment;
+    private void syncSector() {
+        if (executionEnvironment != null)
+            executionEnvironment.sector(sector);
     }
 
     public Document newDocument() {

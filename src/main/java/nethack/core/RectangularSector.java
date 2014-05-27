@@ -5,11 +5,15 @@ package nethack.core;
  */
 public class RectangularSector implements Sector {
     private final Block[][] blocks;
+    private final int width;
+    private final int height;
 
     public RectangularSector(int width, int height) {
+        this.width = width;
+        this.height = height;
         Block[][] blocks = new Block[height][width];
-        for(int y=0;y<height;y++) {
-            for(int x=0;x<width;x++) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 blocks[y][x] = new Block();
             }
         }
@@ -19,6 +23,17 @@ public class RectangularSector implements Sector {
 
     @Override
     public Block blockAt(int x, int y) {
-        return blocks[y-1][x-1];
+        return blocks[y - 1][x - 1];
+    }
+
+    @Override
+    public boolean isInside(Location location) {
+        if(location == null)
+            throw new IllegalArgumentException();
+
+        return location.x() > 0
+                && location.x() <= width
+                && location.y() > 0
+                && location.y() <= height;
     }
 }

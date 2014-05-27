@@ -5,4 +5,6 @@ package nethack.core;
  */
 public interface Sector {
     Block blockAt(int x, int y);
+
+    boolean isInside(Location location);
 }
