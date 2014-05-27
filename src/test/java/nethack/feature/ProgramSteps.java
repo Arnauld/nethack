@@ -1,6 +1,5 @@
 package nethack.feature;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -8,6 +7,7 @@ import nethack.core.Direction;
 import nethack.core.ExecutionEnvironment;
 import nethack.core.Instr;
 import nethack.core.Location;
+import nethack.core.ProgramExecutionException;
 import nethack.core.instr.Mnemonics;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class ProgramSteps {
     private final Context context;
+    private ProgramExecutionException lastExecution;
 
     public ProgramSteps(Context context) {
         this.context = context;
@@ -34,8 +35,12 @@ public class ProgramSteps {
         ExecutionEnvironment execEnv = context.getExecutionEnvironment();
         assertThat(execEnv).describedAs("No execution environement defined").isNotNull();
 
-        Instr instr = new Mnemonics().parse(mnemonic);
-        execEnv.execute(instr);
+        try {
+            Instr instr = new Mnemonics().parse(mnemonic);
+            execEnv.execute(instr);
+        } catch (ProgramExecutionException e) {
+            lastExecution = e;
+        }
     }
 
     @Then("^my program should be looking in (.+) direction$")

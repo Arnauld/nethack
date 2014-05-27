@@ -19,14 +19,23 @@ public class Block {
         return corrupted;
     }
 
-    public void leave(Object occupiedBy) {
-        if(this.occupiedBy==null || !this.occupiedBy.equals(occupiedBy)) {
-            throw new ProgramExecutionException(ErrorCode.CannotLeaveNonOccupiedBlock, this.occupiedBy);
-        }
+    public void free() {
         this.occupiedBy = null;
     }
 
     public void enter(Object occupiedBy) {
         this.occupiedBy = occupiedBy;
+    }
+
+    public void corrupt() {
+        this.corrupted = true;
+    }
+
+    public void repair() {
+        this.corrupted = false;
+    }
+
+    public Object occupiedBy() {
+        return occupiedBy;
     }
 }

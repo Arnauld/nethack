@@ -64,8 +64,13 @@ public class ExecutionEnvironment {
     private void freeLocation(Location location) {
         if (location == null)
             return;
+
         Block block = sector.blockAt(location.x(), location.y());
-        block.leave(this);
+        Object occupiedBy = block.occupiedBy();
+        if (occupiedBy == null || !this.equals(occupiedBy)) {
+            throw new ProgramExecutionException(ErrorCode.CannotLeaveNonOccupiedBlock, occupiedBy);
+        }
+        block.free();
     }
 
     private void checkLocation(Location newLocation) {

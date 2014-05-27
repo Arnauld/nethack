@@ -30,6 +30,13 @@ public class SectorSteps {
         context.setSector(sector);
     }
 
+
+    @Given("^the block at \\((\\d+),(\\d+)\\) has been corrupted$")
+    public void corruptBlock(int x, int y) throws Throwable {
+        Block block = currentSector().blockAt(x, y);
+        block.corrupt();
+    }
+
     @Then("^the block at \\((\\d+),(\\d+)\\) is grey and empty$")
     public void assertBlockIsGreyAndEmpty(int x, int y) throws Throwable {
         Block block = currentSector().blockAt(x, y);
