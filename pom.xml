@@ -119,6 +119,14 @@
             <scope>test</scope>
         </dependency>
 
+
+        <!-- Pdf reporting -->
+        <dependency>
+            <groupId>org.technbolts</groupId>
+            <artifactId>cucumber-contrib</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <!-- Test -->
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

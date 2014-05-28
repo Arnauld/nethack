@@ -1,11 +1,12 @@
 Feature: RobotHack winning conditions
 
+  @service @ui
   Scenario: Level is not won if there is still non-hacked document
-
     Given a new level with 3 documents
     When I hack one document
     Then the level should not be won
 
+  @service
   Scenario: Level is won when there is no more document to hack
 
     Given a new level with 3 documents
