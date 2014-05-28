@@ -14,8 +14,8 @@ import java.io.FileNotFoundException;
  */
 @RunWith(Cucumber.class)
 @CucumberOptions(strict = true,
-        glue = "robothack.feature.service",
-        tags = "@service"
+        glue = "robothack.feature.service"
+        , tags = {"@in-dev"}
         //,format = {"robothack.feature.RunFeatureServiceTest$ConfiguredFormatter:target/pdf"}
 )
 public class RunFeatureServiceTest {

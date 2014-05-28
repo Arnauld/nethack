@@ -1,33 +1,36 @@
 package robothack.core;
 
-import com.google.common.collect.Lists;
-
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * @author <a href="http://twitter.com/aloyer">@aloyer</a>
  */
 public class Sector {
 
-    private final List<Document> documents = Lists.newArrayList();
+    private final BlockAllocationTable blockAllocationTable;
 
-    public void declareDocument(Document document) {
-        documents.add(document);
+    public Sector(BlockAllocationTable blockAllocationTable) {
+        this.blockAllocationTable = blockAllocationTable;
     }
 
-    public void hackDocument() {
-        Optional<Document> first =
-                documents.stream()
-                        .filter((doc) -> !doc.hasBeenHacked())
-                        .findFirst();
-        if (first.isPresent())
-            first.get().hack();
-        else
-            throw new ProgramExecutionException("No document to hack");
+    public void declareDocument(int x, int y, Document document) {
+        Block block = blockAllocationTable.blockAt(x, y);
+        if(block.hasDocument())
+            throw new ProgramExecutionException("Document already present at location (" + x + ", " + y + ")");
+        block.setDocument(document);
     }
 
-    public boolean isfinished() {
-        return documents.stream().noneMatch((doc) -> !doc.hasBeenHacked());
+    public boolean isFinished() {
+        Stream<Block> blocks = blockAllocationTable.blocks();
+        return blocks.noneMatch((b) -> b.hasDocument() && !b.getDocument().hasBeenHacked());
+    }
+
+    public Block blockAt(int x, int y) {
+        return blockAllocationTable.blockAt(x, y);
+    }
+
+    public boolean isValid(Location location) {
+        return blockAllocationTable.exists(location);
     }
 }

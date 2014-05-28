@@ -4,21 +4,21 @@ Feature: Move
   As a program
   I want to move
 
+  Background:
+    Given a very simple 2x2 sector
 
   Scenario: Move south to a valid cell
 
-    Given the very simple 2x2 sector
-    And my location is (1,1), headed south
+    Given my location is (1,1), headed south
     When I move forward
-    Then my location is (1,2)
+    Then my location should be (1,2)
 
   @acceptance-tests
   Scenario Outline: Move any direction to a valid cell
 
-    Given the very simple 2x2 sector
-    And my location is <location>, headed <direction>
+    Given my location is <location>, headed <direction>
     When I move forward
-    Then my location shoud be <destination>
+    Then my location should be <destination>
 
   Examples:
     | location | direction | destination |
@@ -30,7 +30,6 @@ Feature: Move
 
   Scenario: Move outside sector
 
-    Given the very simple 2x2 sector
-    And my location is (1,1), headed north
+    Given my location is (1,1), headed north
     When I move forward
     Then my program should crash
