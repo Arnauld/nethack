@@ -5,6 +5,8 @@ package nethack.core;
  */
 public class Block {
     private Document document;
+    private Door door;
+    private Toggle toggle;
     private Object occupiedBy = null;
     private boolean corrupted;
 
@@ -34,6 +36,8 @@ public class Block {
 
     public void enter(Object occupiedBy) {
         this.occupiedBy = occupiedBy;
+        if (toggle != null)
+            toggle.toggle();
     }
 
     public void corrupt() {
@@ -48,4 +52,15 @@ public class Block {
         return occupiedBy;
     }
 
+    public void placeDoor(Door door) {
+        this.door = door;
+    }
+
+    public Door door() {
+        return door;
+    }
+
+    public void placeToggle(Toggle toggle) {
+        this.toggle = toggle;
+    }
 }

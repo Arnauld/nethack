@@ -88,11 +88,14 @@ public class ExecutionEnvironment {
     private void checkAllowedBlock(Location newLocation) {
         Block block = sector.blockAt(newLocation.x(), newLocation.y());
         if (block.isCorrupted()) {
-            crash(ErrorCode.SectorCorrupted, newLocation);
+            crash(ErrorCode.BlockCorrupted, newLocation);
         }
         if (!block.isEmpty()) {
-            crash(ErrorCode.SectorNonEmpty, newLocation);
+            crash(ErrorCode.BlockNonEmpty, newLocation);
         }
+        Door door = block.door();
+        if(door != null && !door.isOpened())
+            crash(ErrorCode.BlockDoorClosed, newLocation);
     }
 
     private void checkSectorRange(Location newLocation) {

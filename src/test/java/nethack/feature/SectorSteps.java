@@ -3,12 +3,7 @@ package nethack.feature;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import nethack.core.Block;
-import nethack.core.Color;
-import nethack.core.Document;
-import nethack.core.RectangularSector;
-import nethack.core.Sector;
-import nethack.core.WinningConditions;
+import nethack.core.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +46,17 @@ public class SectorSteps {
         block.corrupt();
     }
 
+    @Given("^the block at \\((\\d+),(\\d+)\\) has been sealed by a door with a toggle at \\((\\d+),(\\d+)\\)$")
+    public void placeDoorAndToggle(int doorX, int doorY, int toggleX, int toggleY) throws Throwable {
+        Door door = new Door();
+        Block doorBlock = currentSector().blockAt(doorX, doorY);
+        doorBlock.placeDoor(door);
+
+        Toggle toggle = new Toggle(door);
+        Block toggleBlock = currentSector().blockAt(doorX, doorY);
+        toggleBlock.placeToggle(toggle);
+
+    }
 
     @Given("^a new sector with (\\d+) documents$")
     public void defineLevel(int nbDocuments) throws Throwable {
@@ -94,6 +100,20 @@ public class SectorSteps {
         Block block = currentSector().blockAt(x, y);
         assertThat(block.isEmpty()).isTrue();
         assertThat(block.color()).isEqualTo(Color.Grey);
+    }
+
+    @Then("^the door at \\((\\d+),(\\d+)\\) should be closed$")
+    public void assertDoorIsClosed(int x, int y) throws Throwable {
+        Block block = currentSector().blockAt(x, y);
+        assertThat(block.door()).isNotNull();
+        assertThat(block.door().isOpened()).isFalse();
+    }
+
+    @Then("^the door at \\((\\d+),(\\d+)\\) should be opened$")
+    public void assertDoorIsOpened(int x, int y) throws Throwable {
+        Block block = currentSector().blockAt(x, y);
+        assertThat(block.door()).isNotNull();
+        assertThat(block.door().isOpened()).isTrue();
     }
 
 }
