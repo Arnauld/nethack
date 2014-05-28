@@ -6,6 +6,8 @@ import cucumber.api.java.en.When;
 import robothack.core.*;
 import robothack.feature.World;
 
+import java.util.stream.Stream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -24,8 +26,8 @@ public class SectorStepdefs {
         return world.getSector();
     }
 
-    @When("^I hack one document$")
-    public void hackOneDocument() throws Throwable {
+    @When("^I hack the document$")
+    public void invokeHack() throws Throwable {
         try {
             world.getExecutionUnit().execute(new Hack());
         } catch (ProgramExecutionException pe) {
@@ -33,9 +35,19 @@ public class SectorStepdefs {
         }
     }
 
+    @When("^I hack one document$")
+    public void hackAnyDocument() throws Throwable {
+        Stream<Block> blocks = world.getExecutionUnit().getSector().blocks();
+        Block block = blocks
+                .filter(Predicates.blockWithNonHackedDocument())
+                .findFirst()
+                .orElseThrow(() -> new ProgramExecutionException("No block with non-hacked document"));
+        block.getDocument().hack();
+    }
+
     @When("^I(?: still)? hack an other one$")
-    public void i_hack_an_other_one() throws Throwable {
-        hackOneDocument();
+    public void hackAnyOtherDocument() throws Throwable {
+        hackAnyDocument();
     }
 
     @Then("^the level should be won$")

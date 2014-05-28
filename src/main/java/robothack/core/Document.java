@@ -13,4 +13,5 @@ public class Document {
     public boolean hasBeenHacked() {
         return hacked;
     }
+
 }
